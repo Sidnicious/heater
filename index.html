@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<label><input type=checkbox checked id=bring_the_heat> Bring the heat</label>
+<script id=worker type="text/x-worker">
+while (true);
+</script>
+<script>
+
+var workerURL = window.URL.createObjectURL(new Blob([worker.textContent], { type: 'text/javascript' }));
+var workers = [];
+
+function start() {
+	var i = 8;
+	while (i--) {
+	   workers.push(new Worker(workerURL));
+	}
+}
+
+function stop() {
+	workers.forEach(function (w) { w.terminate(); });
+	workers = [];
+}
+
+bring_the_heat.addEventListener('change', function(){
+	if (this.checked) start();
+	else stop();
+}, false);
+
+if (bring_the_heat.checked) start();
+
+</script>
